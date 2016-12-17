@@ -15,5 +15,12 @@
  */
 
 function RedemptionTemplate() {
-    
+    this.declarations = {};
 }
+
+RedemptionTemplate.prototype.declaration = function (declaration) {
+    this.declarations.push(declaration);
+    return this;
+};
+
+module.exports = RedemptionTemplate;

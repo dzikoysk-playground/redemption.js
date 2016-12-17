@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+var RedemptionTemplate = require('./redemption_template');
 var RedemptionContent = require('./redemption_content.js');
 var RedemptionBuilder = require('./redemption_builder.js');
 
