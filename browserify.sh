@@ -1,3 +1,3 @@
 #!/bin/bash
 
-browserify src/redemption.js --bare > dist/redemption.dev.js
+browserify -e src/redemption.js -o dist/redemption.dev.js --node
