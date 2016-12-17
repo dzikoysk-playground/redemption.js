@@ -21,8 +21,14 @@ function Redemption() {
     this.content = new RedemptionContent();
 }
 
-Redemption.prototype.build = function () {
-    var builder = new RedemptionBuilder();
+Redemption.prototype.amen = function (parentElement) {
+    var builder = new RedemptionBuilder(this.content);
+    builder.prepare();
+    builder.apply(parentElement);
+};
+
+Redemption.prototype.getContent = function () {
+    return this.content;
 };
 
 module.exports = Redemption;
