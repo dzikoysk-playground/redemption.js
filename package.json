@@ -1,0 +1,27 @@
+{
+  "name": "redemption",
+  "version": "0.0.1-indev-SNAPSHOT",
+  "description": "#onlypanda",
+  "main": "src/redemption.js",
+  "dependencies": {},
+  "devDependencies": {
+    "browserify": "^13.1.1",
+    "uglify-js": "^2.7.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dzikoysk/Redemption.js.git"
+  },
+  "keywords": [
+    "redemption"
+  ],
+  "author": "dzikoysk",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/dzikoysk/Redemption.js/issues"
+  },
+  "homepage": "https://github.com/dzikoysk/Redemption.js#readme"
+}
