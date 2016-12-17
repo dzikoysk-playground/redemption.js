@@ -15,11 +15,15 @@
  */
 
 function RedemptionContent() {
-
+    this.elements = {};
 }
 
 RedemptionContent.prototype.add = function (element) {
+    this.elements.push(element);
+};
 
+RedemptionContent.prototype.getElements = function () {
+    return this.elements;
 };
 
 module.exports = RedemptionContent;

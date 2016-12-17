@@ -18,4 +18,12 @@ function RedemptionBuilder(content) {
     this.content = content;
 }
 
+RedemptionBuilder.prototype.prepare = function () {
+
+};
+
+RedemptionBuilder.prototype.apply = function (parentElement) {
+
+};
+
 module.exports = RedemptionBuilder;
