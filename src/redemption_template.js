@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-function RedemptionTemplate() {
-    this.declarations = {};
-}
+var RedemptionTemplate = function RedemptionTemplate() {
+    this.declarations = [];
+};
 
 RedemptionTemplate.prototype.declaration = function (declaration) {
     this.declarations.push(declaration);

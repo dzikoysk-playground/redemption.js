@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-function Redemption() {
-    this.version = '0.0.1-indev-SNAPSHOT';
+function RedemptionFactory() {
+    this.content = new Redemption.RedemptionContent();
 }
 
-Redemption.RedemptionTemplate = require('./redemption_template');
-Redemption.RedemptionContent = require('./redemption_content.js');
-Redemption.RedemptionBuilder = require('./redemption_builder.js');
-Redemption.RedemptionFactory = require('./redemption_factory');
-Redemption.Component = require('./content/Component');
+RedemptionFactory.prototype.invoke = function (runnable) {
+    runnable();
+};
 
-module.exports = Redemption;
+RedemptionFactory.prototype.amen = function (parentElement) {
+    var builder = new RedemptionBuilder(this.content);
+    builder.prepare();
+    builder.apply(parentElement);
+};
+
+RedemptionFactory.prototype.getContent = function () {
+    return this.content;
+};
+
+module.exports = RedemptionFactory;
