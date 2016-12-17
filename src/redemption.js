@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
-function Redemption() {
+var RedemptionContent = require('./redemption_content.js');
+var RedemptionBuilder = require('./redemption_builder.js');
 
+function Redemption() {
+    this.content = new RedemptionContent();
 }
+
+Redemption.prototype.build = function () {
+    var builder = new RedemptionBuilder();
+};
+
+module.exports = Redemption;
