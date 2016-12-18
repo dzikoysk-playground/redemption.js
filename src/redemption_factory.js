@@ -15,21 +15,10 @@
  */
 
 function RedemptionFactory() {
-    this.content = new Redemption.RedemptionContent();
 }
 
-RedemptionFactory.prototype.invoke = function (runnable) {
-    runnable();
-};
-
-RedemptionFactory.prototype.amen = function (parentElement) {
-    var builder = new RedemptionBuilder(this.content);
-    builder.prepare();
-    builder.apply(parentElement);
-};
-
-RedemptionFactory.prototype.getContent = function () {
-    return this.content;
+RedemptionFactory.prototype.create = function (template) {
+    return new RedemptionObjectModel(template);
 };
 
 module.exports = RedemptionFactory;
