@@ -9,11 +9,11 @@ mkdir ./dist/
 wait
 
 echo 'Executing browserify.sh...'
-./browserify.sh
+bash ./browserify.sh
 wait
 
 echo 'Executing minify.sh...'
-./minify.sh
+bash ./minify.sh
 wait
 
 echo 'Redemption.js is located in the ./dist/ directory.'
