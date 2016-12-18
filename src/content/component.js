@@ -16,11 +16,11 @@
 
 function Component(element) {
     this.element = element;
-    this.childs = {};
+    this.children = {};
 }
 
 Component.prototype.addChild = function (component) {
-    this.childs.push(component);
+    this.children.push(component);
 };
 
 Component.prototype.getElement = function () {
