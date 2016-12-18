@@ -15,7 +15,15 @@
  */
 
 function PlaceholderManager() {
-
+    this.placeholders = {};
 }
+
+PlaceholderManager.prototype.fill = function (template) {
+
+};
+
+PlaceholderManager.prototype.put = function (name, handler) {
+    this.placeholders[name] = handler;
+};
 
 module.exports = PlaceholderManager;

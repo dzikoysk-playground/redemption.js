@@ -17,11 +17,11 @@
 
 function Component(element) {
     this.element = element;
-    this.childs = {};
+    this.children = [];
 }
 
 Component.prototype.addChild = function (component) {
-    this.childs.push(component);
+    this.children.push(component);
 };
 
 Component.prototype.getElement = function () {
@@ -29,6 +29,7 @@ Component.prototype.getElement = function () {
 };
 
 module.exports = Component;
+
 },{}],2:[function(require,module,exports){
 /*
  * Copyright (c) 2016 Dzikoysk

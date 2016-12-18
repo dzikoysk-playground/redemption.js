@@ -16,7 +16,7 @@
 
 function Component(element) {
     this.element = element;
-    this.children = {};
+    this.children = [];
 }
 
 Component.prototype.addChild = function (component) {

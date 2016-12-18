@@ -1,5 +1,6 @@
 # Redemption.js
 Amen.
+
 #### Repository structure
 
 ```
