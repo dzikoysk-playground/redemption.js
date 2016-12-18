@@ -22,6 +22,7 @@ Redemption.RedemptionTemplate = require('./redemption_template');
 Redemption.RedemptionContent = require('./redemption_content.js');
 Redemption.RedemptionBuilder = require('./redemption_builder.js');
 Redemption.RedemptionFactory = require('./redemption_factory');
+Redemption.RedemptionObjectModel = require('./redemption_object_model');
 Redemption.Component = require('./content/Component');
 
 module.exports = Redemption;
