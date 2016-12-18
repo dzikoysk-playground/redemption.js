@@ -18,11 +18,11 @@ function Redemption() {
     this.version = '0.0.1-indev-SNAPSHOT';
 }
 
-Redemption.RedemptionTemplate = require('./redemption_template');
+Redemption.RedemptionTemplate = require('./redemption_template.js');
 Redemption.RedemptionContent = require('./redemption_content.js');
 Redemption.RedemptionBuilder = require('./redemption_builder.js');
-Redemption.RedemptionFactory = require('./redemption_factory');
-Redemption.RedemptionObjectModel = require('./redemption_object_model');
-Redemption.Component = require('./content/Component');
+Redemption.RedemptionFactory = require('./redemption_factory.js');
+Redemption.RedemptionObjectModel = require('./redemption_object_model.js');
+Redemption.Component = require('./content/component.js');
 
 module.exports = Redemption;
