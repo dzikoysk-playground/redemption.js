@@ -15,21 +15,19 @@
  * limitations under the License.
  */
 
-function Component(element) {
-    this.element = element;
-    this.children = [];
+function RedemptionObjectModel() {
+    this.placeholderManager = new Redemption.PlaceholderManager();
 }
 
-Component.prototype.addChild = function (component) {
-    this.children.push(component);
+RedemptionFactory.prototype.applyTo = function (parentElement) {
+
 };
 
-Component.prototype.getElement = function () {
-    return this.element;
+RedemptionFactory.prototype.getPlaceholderManager = function () {
+    return this.placeholderManager;
 };
 
-module.exports = Component;
-
+module.exports = RedemptionObjectModel;
 },{}],2:[function(require,module,exports){
 /*
  * Copyright (c) 2016 Dzikoysk
@@ -47,19 +45,22 @@ module.exports = Component;
  * limitations under the License.
  */
 
-function Redemption() {
-    this.version = '0.0.1-indev-SNAPSHOT';
+function Component(element) {
+    this.element = element;
+    this.children = [];
 }
 
-Redemption.RedemptionTemplate = require('./redemption_template.js');
-Redemption.RedemptionContent = require('./redemption_content.js');
-Redemption.RedemptionBuilder = require('./redemption_builder.js');
-Redemption.RedemptionFactory = require('./redemption_factory.js');
-Redemption.RedemptionObjectModel = require('./RedemptionObjectModel.js');
-Redemption.Component = require('./content/Component.js');
+Component.prototype.addChild = function (component) {
+    this.children.push(component);
+};
 
-module.exports = Redemption;
-},{"./content/component.js":1,"./redemption_builder.js":3,"./redemption_content.js":4,"./redemption_factory.js":5,"./redemption_object_model.js":6,"./redemption_template.js":7}],3:[function(require,module,exports){
+Component.prototype.getElement = function () {
+    return this.element;
+};
+
+module.exports = Component;
+
+},{}],3:[function(require,module,exports){
 /*
  * Copyright (c) 2016 Dzikoysk
  *
@@ -76,19 +77,27 @@ module.exports = Redemption;
  * limitations under the License.
  */
 
-function RedemptionBuilder(content) {
-    this.content = content;
+function BeforeLoadListener() {
+    this.actions = [];
+
+    var actions = this.actions;
+    document.onreadystatechange = function(e) {
+        if (!document.readyState === 'complete') {
+            return;
+        }
+
+        actions.forEach(function (action) {
+            action();
+        });
+    };
 }
 
-RedemptionBuilder.prototype.prepare = function () {
-
+BeforeLoadListener.prototype.registerAction = function (action) {
+    this.actions.push(action);
 };
 
-RedemptionBuilder.prototype.apply = function (parentElement) {
+module.exports = BeforeLoadListener;
 
-};
-
-module.exports = RedemptionBuilder;
 
 },{}],4:[function(require,module,exports){
 /*
@@ -107,20 +116,19 @@ module.exports = RedemptionBuilder;
  * limitations under the License.
  */
 
-function RedemptionContent() {
-    this.elements = {};
+function PlaceholderManager() {
+    this.placeholders = {};
 }
 
-RedemptionContent.prototype.add = function (element) {
-    this.elements.push(element);
+PlaceholderManager.prototype.fill = function (template) {
+
 };
 
-RedemptionContent.prototype.getElements = function () {
-    return this.elements;
+PlaceholderManager.prototype.register = function (name, handler) {
+    this.placeholders[name] = handler;
 };
 
-module.exports = RedemptionContent;
-
+module.exports = PlaceholderManager;
 },{}],5:[function(require,module,exports){
 /*
  * Copyright (c) 2016 Dzikoysk
@@ -138,70 +146,21 @@ module.exports = RedemptionContent;
  * limitations under the License.
  */
 
-function RedemptionFactory() {
+var BeforeLoadListener = require('./listener/BeforeLoadListener.js');
+
+function Redemption() {
+    this.version = '0.0.1-indev-SNAPSHOT';
+    this.beforeLoadListener = new BeforeLoadListener();
 }
 
-RedemptionFactory.prototype.create = function (template) {
-    return new RedemptionObjectModel(template);
+Redemption.prototype.getBeforeLoadListener = function () {
+    return this.beforeLoadListener;
 };
 
-module.exports = RedemptionFactory;
-},{}],6:[function(require,module,exports){
-/*
- * Copyright (c) 2016 Dzikoysk
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+Redemption.Component = require('./content/Component.js');
+Redemption.PlaceholderManager = require('./management/PlaceholderManager.js');
+Redemption.RedemptionObjectModel = require('./RedemptionObjectModel.js');
 
-function RedemptionObjectModel(template) {
-    this.template = template;
-    this.content = new Redemption.RedemptionContent();
-}
-
-RedemptionFactory.prototype.amen = function (parentElement) {
-    var builder = new RedemptionBuilder(this.content);
-    builder.prepare();
-    builder.apply(parentElement);
-};
-
-module.exports = RedemptionObjectModel;
-},{}],7:[function(require,module,exports){
-/*
- * Copyright (c) 2016 Dzikoysk
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-var RedemptionTemplate = function RedemptionTemplate() {
-    this.declarations = [];
-};
-
-RedemptionTemplate.prototype.declaration = function (declaration) {
-    this.declarations.push(declaration);
-    return this;
-};
-
-module.exports = RedemptionTemplate;
-
-},{}]},{},[2])(2)
+module.exports = Redemption;
+},{"./RedemptionObjectModel.js":1,"./content/Component.js":2,"./listener/BeforeLoadListener.js":3,"./management/PlaceholderManager.js":4}]},{},[5])(5)
 });
