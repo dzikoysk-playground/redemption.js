@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-function RedemptionObjectModel(template) {
-    this.template = template;
-    this.content = new Redemption.RedemptionContent();
+var BeforeLoadListener = require('./listener/BeforeLoadListener.js');
+
+function Redemption() {
+    this.version = '0.0.1-indev-SNAPSHOT';
+    this.beforeLoadListener = new BeforeLoadListener();
 }
 
-RedemptionFactory.prototype.amen = function (parentElement) {
-    var builder = new RedemptionBuilder(this.content);
-    builder.prepare();
-    builder.apply(parentElement);
+Redemption.prototype.getBeforeLoadListener = function () {
+    return this.beforeLoadListener;
 };
 
-module.exports = RedemptionObjectModel;
+Redemption.Component = require('./content/Component.js');
+Redemption.PlaceholderManager = require('./management/PlaceholderManager.js');
+Redemption.RedemptionObjectModel = require('./RedemptionObjectModel.js');
+
+module.exports = Redemption;

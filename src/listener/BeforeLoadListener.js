@@ -14,16 +14,24 @@
  * limitations under the License.
  */
 
-function PlaceholderManager() {
-    this.placeholders = {};
+function BeforeLoadListener() {
+    this.actions = [];
+
+    var actions = this.actions;
+    document.onreadystatechange = function(e) {
+        if (!document.readyState === 'complete') {
+            return;
+        }
+
+        actions.forEach(function (action) {
+            action();
+        });
+    };
 }
 
-PlaceholderManager.prototype.fill = function (template) {
-
+BeforeLoadListener.prototype.registerAction = function (action) {
+    this.actions.push(action);
 };
 
-PlaceholderManager.prototype.put = function (name, handler) {
-    this.placeholders[name] = handler;
-};
+module.exports = BeforeLoadListener;
 
-module.exports = PlaceholderManager;

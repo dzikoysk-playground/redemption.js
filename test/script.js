@@ -1,14 +1,15 @@
-var Redemption = require('../src/redemption.js');
+var Redemption = require('../src/Redemption.js');
+var redemption = new Redemption();
 
-var redemptionFactory = new Redemption.RedemptionFactory();
-var template = new Redemption.RedemptionTemplate()
-    .declaration('{head}')
-    .declaration('{content}');
+redemption.getBeforeLoadListener().registerAction(function () {
+    var rom = new Redemption.RedemptionObjectModel();
 
-var rom = redemptionFactory.create(template);
+    var placeholderManager = rom.getPlaceholderManager();
+    placeholderManager.register('{head}', headComponent);
+    placeholderManager.register('{content}', contentComponent);
 
-var parent = document.getElementsByName('html');
-rom.amen(parent);
+    rom.applyTo(document);
+});
 
 function require(s) {
     return Redemption;

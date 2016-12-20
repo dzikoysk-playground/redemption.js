@@ -55,8 +55,8 @@ Redemption.RedemptionTemplate = require('./redemption_template.js');
 Redemption.RedemptionContent = require('./redemption_content.js');
 Redemption.RedemptionBuilder = require('./redemption_builder.js');
 Redemption.RedemptionFactory = require('./redemption_factory.js');
-Redemption.RedemptionObjectModel = require('./redemption_object_model.js');
-Redemption.Component = require('./content/component.js');
+Redemption.RedemptionObjectModel = require('./RedemptionObjectModel.js');
+Redemption.Component = require('./content/Component.js');
 
 module.exports = Redemption;
 },{"./content/component.js":1,"./redemption_builder.js":3,"./redemption_content.js":4,"./redemption_factory.js":5,"./redemption_object_model.js":6,"./redemption_template.js":7}],3:[function(require,module,exports){

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-function RedemptionContent() {
-    this.elements = {};
+function RedemptionObjectModel() {
+    this.placeholderManager = new Redemption.PlaceholderManager();
 }
 
-RedemptionContent.prototype.add = function (element) {
-    this.elements.push(element);
+RedemptionFactory.prototype.applyTo = function (parentElement) {
+
 };
 
-RedemptionContent.prototype.getElements = function () {
-    return this.elements;
+RedemptionFactory.prototype.getPlaceholderManager = function () {
+    return this.placeholderManager;
 };
 
-module.exports = RedemptionContent;
+module.exports = RedemptionObjectModel;

@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-function RedemptionFactory() {
+function PlaceholderManager() {
+    this.placeholders = {};
 }
 
-RedemptionFactory.prototype.create = function (template) {
-    return new RedemptionObjectModel(template);
+PlaceholderManager.prototype.fill = function (template) {
+
 };
 
-module.exports = RedemptionFactory;
+PlaceholderManager.prototype.register = function (name, handler) {
+    this.placeholders[name] = handler;
+};
+
+module.exports = PlaceholderManager;
