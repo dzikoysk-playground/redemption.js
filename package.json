@@ -1,6 +1,6 @@
 {
     "name": "redemption",
-    "version": "0.0.1-indev-SNAPSHOT",
+    "version": "indev-0.0.1-SNAPSHOT",
     "description": "#onlypanda",
     "main": "src/redemption.js",
     "dependencies": {},

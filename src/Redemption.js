@@ -15,18 +15,65 @@
  */
 
 var BeforeLoadListener = require('./listener/BeforeLoadListener.js');
+var RedemptionObjectModel = require('./RedemptionObjectModel.js');
 
 function Redemption() {
-    this.version = '0.0.1-indev-SNAPSHOT';
-    this.beforeLoadListener = new BeforeLoadListener();
+    this.version = 'indev-0.0.1-SNAPSHOT';
+    this.modificationsEnabled = false;
+    this.dependenciesLoaded = true;
+    this.onloadCallback = function () {};
 }
 
-Redemption.prototype.getBeforeLoadListener = function () {
-    return this.beforeLoadListener;
+Redemption.prototype.loadDependencies = function (dependencies) {
+    this.dependenciesLoaded = false;
+    this.dependencies = this.dependencies == undefined ? 0 : this.dependencies;
+    var dependenciesCount = 0;
+    var that = this;
+
+    dependencies.forEach(function (dependency) {
+        var script = document.createElement("script");
+        script.src = dependency;
+
+        var callback = function () {
+            --dependenciesCount;
+
+            if (dependenciesCount == 0) {
+                that.onloadCallback();
+            }
+        };
+        script.onreadystatechange = callback;
+        script.onload = callback;
+
+        ++dependenciesCount;
+        document.head.appendChild(script);
+    });
+};
+
+Redemption.prototype.onload = function (callback) {
+    this.onloadCallback = callback;
+
+    if (this.dependenciesLoaded) {
+        callback();
+    }
+};
+
+Redemption.prototype.initializeStructure = function (structure) {
+    this.rom = new RedemptionObjectModel(structure);
+};
+
+Redemption.prototype.enableModifications = function () {
+    this.modificationsEnabled = true;
+};
+
+Redemption.prototype.disableModifications = function () {
+    this.modificationsEnabled = false;
+};
+
+Redemption.prototype.getRedemptionObjectModel = function () {
+    return this.rom;
 };
 
 Redemption.Component = require('./content/Component.js');
 Redemption.PlaceholderManager = require('./management/PlaceholderManager.js');
-Redemption.RedemptionObjectModel = require('./RedemptionObjectModel.js');
 
 module.exports = Redemption;
