@@ -3,11 +3,11 @@
     "version": "indev-0.0.1-SNAPSHOT",
     "description": "#onlypanda",
     "main": "src/redemption.js",
-    "dependencies": {},
-    "devDependencies": {
+    "dependencies": {
         "browserify": "^13.1.1",
         "uglify-js": "^2.7.5"
     },
+    "devDependencies": { },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
