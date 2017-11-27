@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-var BeforeLoadListener = require('./listener/BeforeLoadListener.js');
 var RedemptionObjectModel = require('./RedemptionObjectModel.js');
 
 function Redemption() {
@@ -58,6 +57,10 @@ Redemption.prototype.onload = function (callback) {
 };
 
 Redemption.prototype.initializeStructure = function (structure) {
+    if (!this.modificationsEnabled) {
+        throw new Error("Cannot modify the structure");
+    }
+
     this.rom = new RedemptionObjectModel(structure);
 };
 
@@ -74,6 +77,5 @@ Redemption.prototype.getRedemptionObjectModel = function () {
 };
 
 Redemption.Component = require('./content/Component.js');
-Redemption.PlaceholderManager = require('./management/PlaceholderManager.js');
 
 module.exports = Redemption;
