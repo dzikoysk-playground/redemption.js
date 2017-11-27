@@ -15,138 +15,6 @@
  * limitations under the License.
  */
 
-function RedemptionObjectModel(structure) {
-    this.placeholderManager = new Redemption.PlaceholderManager();
-}
-
-RedemptionObjectModel.prototype.applyTo = function (parentElement) {
-
-};
-
-RedemptionObjectModel.prototype.getPlaceholderManager = function () {
-    return this.placeholderManager;
-};
-
-module.exports = RedemptionObjectModel;
-},{}],2:[function(require,module,exports){
-/*
- * Copyright (c) 2016 Dzikoysk
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-function Component(element) {
-    this.element = element;
-    this.children = [];
-}
-
-Component.prototype.addChild = function (component) {
-    this.children.push(component);
-};
-
-Component.prototype.getElement = function () {
-    return this.element;
-};
-
-module.exports = Component;
-
-},{}],3:[function(require,module,exports){
-/*
- * Copyright (c) 2016 Dzikoysk
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-function BeforeLoadListener() {
-    this.actions = [];
-
-    var actions = this.actions;
-    document.onreadystatechange = function(e) {
-        if (!document.readyState === 'complete') {
-            return;
-        }
-
-        actions.forEach(function (action) {
-            action();
-        });
-    };
-}
-
-BeforeLoadListener.prototype.registerAction = function (action) {
-    this.actions.push(action);
-};
-
-module.exports = BeforeLoadListener;
-
-
-},{}],4:[function(require,module,exports){
-/*
- * Copyright (c) 2016 Dzikoysk
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-function PlaceholderManager() {
-    this.placeholders = {};
-}
-
-PlaceholderManager.prototype.fill = function (template) {
-
-};
-
-PlaceholderManager.prototype.register = function (name, handler) {
-    this.placeholders[name] = handler;
-};
-
-module.exports = PlaceholderManager;
-},{}],5:[function(require,module,exports){
-/*
- * Copyright (c) 2016 Dzikoysk
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-var BeforeLoadListener = require('./listener/BeforeLoadListener.js');
 var RedemptionObjectModel = require('./RedemptionObjectModel.js');
 
 function Redemption() {
@@ -190,6 +58,10 @@ Redemption.prototype.onload = function (callback) {
 };
 
 Redemption.prototype.initializeStructure = function (structure) {
+    if (!this.modificationsEnabled) {
+        throw new Error("Cannot modify the structure");
+    }
+
     this.rom = new RedemptionObjectModel(structure);
 };
 
@@ -206,8 +78,69 @@ Redemption.prototype.getRedemptionObjectModel = function () {
 };
 
 Redemption.Component = require('./content/Component.js');
-Redemption.PlaceholderManager = require('./management/PlaceholderManager.js');
 
 module.exports = Redemption;
-},{"./RedemptionObjectModel.js":1,"./content/Component.js":2,"./listener/BeforeLoadListener.js":3,"./management/PlaceholderManager.js":4}]},{},[5])(5)
+},{"./RedemptionObjectModel.js":2,"./content/Component.js":3}],2:[function(require,module,exports){
+/*
+ * Copyright (c) 2016 Dzikoysk
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+function RedemptionObjectModel(structure) {
+    this.placeholderManager = new Redemption.PlaceholderManager();
+}
+
+RedemptionObjectModel.prototype.applyTo = function (parentElement) {
+
+};
+
+RedemptionObjectModel.prototype.getPlaceholderManager = function () {
+    return this.placeholderManager;
+};
+
+module.exports = RedemptionObjectModel;
+},{}],3:[function(require,module,exports){
+/*
+ * Copyright (c) 2016 Dzikoysk
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+function Component(element) {
+    this.element = element;
+    this.children = [];
+}
+
+Component.prototype.addChild = function (component) {
+    this.children.push(component);
+};
+
+Component.prototype.getElement = function () {
+    return this.element;
+};
+
+module.exports = Component;
+
+},{}]},{},[1])(1)
 });

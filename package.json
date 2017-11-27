@@ -2,7 +2,7 @@
     "name": "redemption",
     "version": "0.0.1-indev",
     "description": "#onlypanda",
-    "main": "src/redemption.js",
+    "main": "src/Redemption.js",
     "dependencies": {
         "browserify": "^13.1.1",
         "uglify-js": "^2.7.5"
