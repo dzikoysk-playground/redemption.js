@@ -20,10 +20,14 @@ function Redemption() {
     this.version = 'indev-0.0.1-SNAPSHOT';
     this.modificationsEnabled = false;
     this.dependenciesLoaded = true;
-    this.onloadCallback = function () {};
+    this.onloadCallback = function() {};
 }
 
-Redemption.prototype.loadDependencies = function (dependencies) {
+Redemption.prototype.render = function () {
+    
+}
+
+Redemption.prototype.loadDependencies = function (parent, dependencies) {
     this.dependenciesLoaded = false;
     this.dependencies = this.dependencies == undefined ? 0 : this.dependencies;
     var dependenciesCount = 0;
@@ -31,7 +35,7 @@ Redemption.prototype.loadDependencies = function (dependencies) {
 
     dependencies.forEach(function (dependency) {
         var script = document.createElement("script");
-        script.src = dependency;
+        script.src = parent + dependency;
 
         var callback = function () {
             --dependenciesCount;

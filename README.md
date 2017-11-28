@@ -19,7 +19,7 @@ var redemption = new Redemption();
 redemption.enableModifications();
 
 redemption.loadDependencies([
-    './application/components/HeadComponent.js',
+    './application/components/HeaderComponent.js',
     './application/components/ContentComponent.js']
 );
 

@@ -1,14 +1,14 @@
 var redemption = new Redemption();
 redemption.enableModifications();
 
-redemption.loadDependencies([
-    './application/components/HeadComponent.js',
-    './application/components/ContentComponent.js']
-);
+redemption.loadDependencies('./application/components/', [
+    'HeaderComponent.js',
+    'ContentComponent.js'
+]);
 
 redemption.onload(function () {
     redemption.initializeStructure({
-        head: new HeadComponent(),
+        head: new HeaderComponent(),
         content: new ContentComponent()
     });
     redemption.disableModifications();

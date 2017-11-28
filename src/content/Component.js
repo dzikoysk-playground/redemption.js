@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-function Component(element) {
-    this.element = element;
-    this.children = [];
+function Component(tag) {
+    this.element = document.createElement(tag);
 }
 
-Component.prototype.addChild = function (component) {
-    this.children.push(component);
-};
-
-Component.prototype.getElement = function () {
-    return this.element;
-};
+Component.prototype.render = function () {
+    
+}
 
 module.exports = Component;
