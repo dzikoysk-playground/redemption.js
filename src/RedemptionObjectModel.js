@@ -14,16 +14,31 @@
  * limitations under the License.
  */
 
-function RedemptionObjectModel(structure) {
-    this.placeholderManager = new Redemption.PlaceholderManager();
+function RedemptionObjectModel(redemption, structure) {
+    this.redemption = redemption;
+    this.structure = structure;
 }
 
-RedemptionObjectModel.prototype.applyTo = function (parentElement) {
+RedemptionObjectModel.prototype.render = function () {
+    this.renderedStructure = {};
 
-};
+    var bodyElement = document.querySelector('body');
+    var parentComponent = new Redemption.Component('body', bodyElement);
 
-RedemptionObjectModel.prototype.getPlaceholderManager = function () {
-    return this.placeholderManager;
+    for (var node in this.structure) {
+        var ComponentController = this.structure[node];
+
+        var componentInstance = new ComponentController(this.redemption, this);
+        this.renderedStructure[node] = componentInstance;
+
+        if (componentInstance.create != undefined) {
+            componentInstance.create(this.redemption, this, parentComponent);
+        }
+
+        if (componentInstance.render != undefined) {
+            componentInstance.render(this.redemption, this, parentComponent);
+        }
+    }
 };
 
 module.exports = RedemptionObjectModel;

@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-function Component(tag) {
-    this.element = document.createElement(tag);
+function Component(tag, element) {
+    this.element = element == undefined ? document.createElement(tag) : element;
 }
 
-Component.prototype.render = function () {
-    
-}
+Component.prototype.render = function (parentComponent) {
+    parentComponent.getElement().appendChild(this.element);
+};
+
+Component.prototype.getElement = function () {
+    return this.element;
+};
 
 module.exports = Component;

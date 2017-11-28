@@ -15,22 +15,26 @@
  */
 
 var RedemptionObjectModel = require('./RedemptionObjectModel.js');
+var Component = require('./content/Component.js');
 
 function Redemption() {
-    this.version = 'indev-0.0.1-SNAPSHOT';
+    this.version = '0.0.1-indev';
     this.modificationsEnabled = false;
     this.dependenciesLoaded = true;
     this.onloadCallback = function() {};
 }
 
 Redemption.prototype.render = function () {
-    
-}
+    if (this.rom == undefined) {
+        throw new Error('RedemptionObjectModel (ROM) is not prepared');
+    }
+
+    this.rom.render();
+};
 
 Redemption.prototype.loadDependencies = function (parent, dependencies) {
+    var dependenciesCount = this.dependenciesCount == undefined ? 0 : this.dependenciesCount;
     this.dependenciesLoaded = false;
-    this.dependencies = this.dependencies == undefined ? 0 : this.dependencies;
-    var dependenciesCount = 0;
     var that = this;
 
     dependencies.forEach(function (dependency) {
@@ -65,7 +69,7 @@ Redemption.prototype.initializeStructure = function (structure) {
         throw new Error("Cannot modify the structure");
     }
 
-    this.rom = new RedemptionObjectModel(structure);
+    this.rom = new RedemptionObjectModel(this, structure);
 };
 
 Redemption.prototype.enableModifications = function () {
@@ -80,6 +84,6 @@ Redemption.prototype.getRedemptionObjectModel = function () {
     return this.rom;
 };
 
-Redemption.Component = require('./content/Component.js');
+Redemption.Component = Component;
 
 module.exports = Redemption;

@@ -16,23 +16,31 @@
  */
 
 var RedemptionObjectModel = require('./RedemptionObjectModel.js');
+var Component = require('./content/Component.js');
 
 function Redemption() {
-    this.version = 'indev-0.0.1-SNAPSHOT';
+    this.version = '0.0.1-indev';
     this.modificationsEnabled = false;
     this.dependenciesLoaded = true;
-    this.onloadCallback = function () {};
+    this.onloadCallback = function() {};
 }
 
-Redemption.prototype.loadDependencies = function (dependencies) {
+Redemption.prototype.render = function () {
+    if (this.rom == undefined) {
+        throw new Error('RedemptionObjectModel (ROM) is not prepared');
+    }
+
+    this.rom.render();
+};
+
+Redemption.prototype.loadDependencies = function (parent, dependencies) {
+    var dependenciesCount = this.dependenciesCount == undefined ? 0 : this.dependenciesCount;
     this.dependenciesLoaded = false;
-    this.dependencies = this.dependencies == undefined ? 0 : this.dependencies;
-    var dependenciesCount = 0;
     var that = this;
 
     dependencies.forEach(function (dependency) {
         var script = document.createElement("script");
-        script.src = dependency;
+        script.src = parent + dependency;
 
         var callback = function () {
             --dependenciesCount;
@@ -62,7 +70,7 @@ Redemption.prototype.initializeStructure = function (structure) {
         throw new Error("Cannot modify the structure");
     }
 
-    this.rom = new RedemptionObjectModel(structure);
+    this.rom = new RedemptionObjectModel(this, structure);
 };
 
 Redemption.prototype.enableModifications = function () {
@@ -77,7 +85,7 @@ Redemption.prototype.getRedemptionObjectModel = function () {
     return this.rom;
 };
 
-Redemption.Component = require('./content/Component.js');
+Redemption.Component = Component;
 
 module.exports = Redemption;
 },{"./RedemptionObjectModel.js":2,"./content/Component.js":3}],2:[function(require,module,exports){
@@ -97,16 +105,31 @@ module.exports = Redemption;
  * limitations under the License.
  */
 
-function RedemptionObjectModel(structure) {
-    this.placeholderManager = new Redemption.PlaceholderManager();
+function RedemptionObjectModel(redemption, structure) {
+    this.redemption = redemption;
+    this.structure = structure;
 }
 
-RedemptionObjectModel.prototype.applyTo = function (parentElement) {
+RedemptionObjectModel.prototype.render = function () {
+    this.renderedStructure = {};
 
-};
+    var bodyElement = document.querySelector('body');
+    var parentComponent = new Redemption.Component('body', bodyElement);
 
-RedemptionObjectModel.prototype.getPlaceholderManager = function () {
-    return this.placeholderManager;
+    for (var node in this.structure) {
+        var ComponentController = this.structure[node];
+
+        var componentInstance = new ComponentController(this.redemption, this);
+        this.renderedStructure[node] = componentInstance;
+
+        if (componentInstance.create != undefined) {
+            componentInstance.create(this.redemption, this, parentComponent);
+        }
+
+        if (componentInstance.render != undefined) {
+            componentInstance.render(this.redemption, this, parentComponent);
+        }
+    }
 };
 
 module.exports = RedemptionObjectModel;
@@ -127,13 +150,12 @@ module.exports = RedemptionObjectModel;
  * limitations under the License.
  */
 
-function Component(element) {
-    this.element = element;
-    this.children = [];
+function Component(tag, element) {
+    this.element = element == undefined ? document.createElement(tag) : element;
 }
 
-Component.prototype.addChild = function (component) {
-    this.children.push(component);
+Component.prototype.render = function (parentComponent) {
+    parentComponent.getElement().appendChild(this.element);
 };
 
 Component.prototype.getElement = function () {

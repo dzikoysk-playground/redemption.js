@@ -8,8 +8,10 @@ redemption.loadDependencies('./application/components/', [
 
 redemption.onload(function () {
     redemption.initializeStructure({
-        head: new HeaderComponent(),
-        content: new ContentComponent()
+        head: HeaderComponent,
+        content: ContentComponent
     });
+
     redemption.disableModifications();
+    redemption.render();
 });
