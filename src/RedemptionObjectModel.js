@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Dzikoysk
+ * Copyright (c) 2016-2017 Dzikoysk
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,13 @@
 
 function RedemptionObjectModel(redemption, structure) {
     this.redemption = redemption;
-    this.structure = structure;
+    this.component = new Redemption.Component(redemption, 'body', structure);
 }
 
 RedemptionObjectModel.prototype.render = function () {
-    this.renderedStructure = {};
-
     var bodyElement = document.querySelector('body');
-    var parentComponent = new Redemption.Component('body', bodyElement);
-
-    for (var node in this.structure) {
-        var ComponentController = this.structure[node];
-
-        var componentInstance = new ComponentController(this.redemption, this);
-        this.renderedStructure[node] = componentInstance;
-
-        if (componentInstance.create != undefined) {
-            componentInstance.create(this.redemption, this, parentComponent);
-        }
-
-        if (componentInstance.render != undefined) {
-            componentInstance.render(this.redemption, this, parentComponent);
-        }
-    }
+    this.component.setElement(bodyElement);
+    this.component.render();
 };
 
 module.exports = RedemptionObjectModel;

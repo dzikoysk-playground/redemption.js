@@ -1,6 +1,6 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Redemption = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /*
- * Copyright (c) 2016 Dzikoysk
+ * Copyright (c) 2016-2017 Dzikoysk
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,7 +90,7 @@ Redemption.Component = Component;
 module.exports = Redemption;
 },{"./RedemptionObjectModel.js":2,"./content/Component.js":3}],2:[function(require,module,exports){
 /*
- * Copyright (c) 2016 Dzikoysk
+ * Copyright (c) 2016-2017 Dzikoysk
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -107,35 +107,19 @@ module.exports = Redemption;
 
 function RedemptionObjectModel(redemption, structure) {
     this.redemption = redemption;
-    this.structure = structure;
+    this.component = new Redemption.Component(redemption, 'body', structure);
 }
 
 RedemptionObjectModel.prototype.render = function () {
-    this.renderedStructure = {};
-
     var bodyElement = document.querySelector('body');
-    var parentComponent = new Redemption.Component('body', bodyElement);
-
-    for (var node in this.structure) {
-        var ComponentController = this.structure[node];
-
-        var componentInstance = new ComponentController(this.redemption, this);
-        this.renderedStructure[node] = componentInstance;
-
-        if (componentInstance.create != undefined) {
-            componentInstance.create(this.redemption, this, parentComponent);
-        }
-
-        if (componentInstance.render != undefined) {
-            componentInstance.render(this.redemption, this, parentComponent);
-        }
-    }
+    this.component.setElement(bodyElement);
+    this.component.render();
 };
 
 module.exports = RedemptionObjectModel;
 },{}],3:[function(require,module,exports){
 /*
- * Copyright (c) 2016 Dzikoysk
+ * Copyright (c) 2016-2017 Dzikoysk
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -150,12 +134,39 @@ module.exports = RedemptionObjectModel;
  * limitations under the License.
  */
 
-function Component(tag, element) {
-    this.element = element == undefined ? document.createElement(tag) : element;
+function Component(redemption, tag, structure) {
+    this.redemption = redemption;
+    this.structure = structure;
+    this.element = document.createElement(tag);
 }
 
 Component.prototype.render = function (parentComponent) {
+    this.renderedStructure = {};
+
+    for (var node in this.structure) {
+        var ComponentController = this.structure[node];
+
+        var componentInstance = new ComponentController(this.redemption, this);
+        this.renderedStructure[node] = componentInstance;
+
+        if (componentInstance.create != undefined) {
+            componentInstance.create(this.redemption, this);
+        }
+
+        if (componentInstance.render != undefined) {
+            componentInstance.render(this.redemption, this);
+        }
+    }
+
+    if (parentComponent == undefined) {
+        return;
+    }
+
     parentComponent.getElement().appendChild(this.element);
+};
+
+Component.prototype.setElement = function (element) {
+    this.element = element;
 };
 
 Component.prototype.getElement = function () {

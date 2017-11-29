@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Dzikoysk
+ * Copyright (c) 2016-2017 Dzikoysk
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,39 @@
  * limitations under the License.
  */
 
-function Component(tag, element) {
-    this.element = element == undefined ? document.createElement(tag) : element;
+function Component(redemption, tag, structure) {
+    this.redemption = redemption;
+    this.structure = structure;
+    this.element = document.createElement(tag);
 }
 
 Component.prototype.render = function (parentComponent) {
+    this.renderedStructure = {};
+
+    for (var node in this.structure) {
+        var ComponentController = this.structure[node];
+
+        var componentInstance = new ComponentController(this.redemption, this);
+        this.renderedStructure[node] = componentInstance;
+
+        if (componentInstance.create != undefined) {
+            componentInstance.create(this.redemption, this);
+        }
+
+        if (componentInstance.render != undefined) {
+            componentInstance.render(this.redemption, this);
+        }
+    }
+
+    if (parentComponent == undefined) {
+        return;
+    }
+
     parentComponent.getElement().appendChild(this.element);
+};
+
+Component.prototype.setElement = function (element) {
+    this.element = element;
 };
 
 Component.prototype.getElement = function () {
